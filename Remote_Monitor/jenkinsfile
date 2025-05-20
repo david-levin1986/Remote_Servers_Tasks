@@ -1,10 +1,25 @@
 pipeline {
     agent any
 
+    environment {
+                SSH_KEY = '/var/jenkins_home/.ssh/id_rsa'
+                REMOTE_USER = 'jenkinsusr'
+                REMOTE_HOST = '192.168.50.125'
+                //WEB_SERVICE = 'motivation'
+                //WEB_TEST = "Your problem"
+                
+            }
+
     stages {
-        stage('Hello') {
+
+        stage('Copy Script') {
             steps {
-                echo 'Hello World'
+                sh '''
+                    scp -i $SSH_KEY performance_checker.sh $REMOTE_USER@$REMOTE_HOST:/tmp/performance_checker.sh             
+                    ssh -i $SSH_KEY $REMOTE_USER@$REMOTE_HOST <<'EOF'
+                    chmod +x /tmp/performance_checker.sh
+                    /tmp/performance_checker.sh
+                '''
             }
         }
     }
