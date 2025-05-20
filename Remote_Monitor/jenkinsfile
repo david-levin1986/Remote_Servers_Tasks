@@ -12,7 +12,7 @@ pipeline {
 
     stages {
 
-        stage('Copy Script') {
+        stage('Copy & Script') {
             steps {
                 sh '''
                     scp -i $SSH_KEY Remote_Monitor/performance_checker.sh $REMOTE_USER@$REMOTE_HOST:/tmp/InstallWebService.sh             
@@ -21,6 +21,23 @@ pipeline {
                     /tmp/InstallWebService.sh
                 '''
             }
+
         }
+
+         stage('Copy Reports') {
+            steps {
+                sh '''
+                    #scp $REMOTE_USER@192.168.50.125:/tmp/*performance.log $REMOTE_USER@192.168.50.120:/loger/
+                    scp -i $SSH_KEY Remote_Monitor/performance_checker.sh $REMOTE_USER@$REMOTE_HOST:/tmp/InstallWebService.sh             
+                    ssh -i $SSH_KEY $REMOTE_USER@$REMOTE_HOST <<'EOF'
+                    chmod +x /tmp/InstallWebService.sh
+                    /tmp/InstallWebService.sh
+                '''
+            }
+
+        
+
+        }
+
     }
 }
