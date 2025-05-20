@@ -28,7 +28,7 @@ pipeline {
             steps {
                 sh '''
                     scp $REMOTE_USER@192.168.50.125:/tmp/*performance.log Remote_Monitor/
-                    scp -i $SSH_KEY Remote_Monitor/performance_checker.sh $REMOTE_USER@$192.168.50.120:/loger
+                    scp -i $SSH_KEY Remote_Monitor/*performance.log $REMOTE_USER@$192.168.50.120:/loger/
                 '''
             }
 
