@@ -25,8 +25,8 @@ pipeline {
          stage('Copy Reports') {
             steps {
                 sh '''
-                    scp $REMOTE_USER@$REMOTE_HOST:/tmp/*performance.log Remote_Monitor/
-                    scp -i $SSH_KEY Remote_Monitor/*performance.log $REMOTE_USER@$MAIN_LOGER:/loger/
+                    scp $REMOTE_USER@$REMOTE_HOST:/tmp/*performance*.log Remote_Monitor/
+                    scp -i $SSH_KEY Remote_Monitor/*performance*.log $REMOTE_USER@$MAIN_LOGER:/loger/
                 '''
             }
 
@@ -36,7 +36,7 @@ pipeline {
             steps {
                 sh '''
                     ssh -i $SSH_KEY $REMOTE_USER@$REMOTE_HOST <<'EOF'
-                    rm -rf /tmp/*performance.log
+                    rm -rf /tmp/*performance*.log
                     rm -rf /tmp/performance_checker.sh
                 '''
             }
