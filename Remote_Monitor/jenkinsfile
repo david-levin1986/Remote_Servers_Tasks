@@ -15,10 +15,31 @@ pipeline {
         stage('Copy Script') {
             steps {
                 sh '''
-                    scp -i $SSH_KEY performance_checker.sh $REMOTE_USER@$REMOTE_HOST:/tmp/performance_checker.sh             
+                    scp -i $SSH_KEY /Remote_Monitor/performance_checker.sh $REMOTE_USER@$REMOTE_HOST:/tmp/InstallWebService.sh             
                     ssh -i $SSH_KEY $REMOTE_USER@$REMOTE_HOST <<'EOF'
-                    chmod +x /tmp/performance_checker.sh
-                    /tmp/performance_checker.sh
+                    chmod +x /tmp/InstallWebService.sh
+                    /tmp/InstallWebService.sh
+                '''
+            }
+        }
+        stage('Deploy Web') {
+            steps {
+                sh '''
+                    scp -r -i $SSH_KEY $WEB_SERVICE $REMOTE_USER@$REMOTE_HOST:/tmp/
+                    ssh -i \$SSH_KEY \$REMOTE_USER@\$REMOTE_HOST <<EOF
+                    sudo rm -rf /var/www/html/*
+                    sudo cp -r /tmp/\$WEB_SERVICE/* /var/www/html/
+                    sudo rm -rf /tmp/InstallWebService.sh
+                    sudo rm -rf /tmp/\$WEB_SERVICE
+
+                '''
+            }
+        }
+      stage('Test Website')  {
+            steps {
+                sh '''
+                echo "Start Testing Website $WEB_SERVICE"
+                curl -s $REMOTE_HOST | grep "$WEB_TEST" || { echo "Error The Relevant Index Not Fund in the WebSite"; exit 1; }
                 '''
             }
         }
