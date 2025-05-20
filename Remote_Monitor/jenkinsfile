@@ -39,6 +39,9 @@ pipeline {
                     rm -rf /tmp/*performance*.log
                     rm -rf /tmp/performance_checker.sh
                 '''
+                sh '''
+                    rm -rf /var/jenkins_home/workspace/Remote_Monitor/*
+                '''
             }
 
         }
