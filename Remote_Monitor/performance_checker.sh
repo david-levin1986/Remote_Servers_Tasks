@@ -9,28 +9,32 @@
   
 # Usage:
 # Jast run the script 
-echo "" >> /tmp/$(hostname)_performance.log
-date >> /tmp/$(hostname)_performance.log
-echo "-------------------------------------------------------" >> /tmp/$(hostname)_performance.log
-echo "Testing Internet Connection... " >> /tmp/$(hostname)_performance.log
+
+#Varibols:
+dateformat=$(date +"%d-%m-%Y_%H:%M:%S")
+#-------------------------------------------------------
+echo "" >> /tmp/$(hostname)_performance_"$dateformat".log
+date >> /tmp/$(hostname)_performance_"$dateformat".log
+echo "-------------------------------------------------------" >> /tmp/$(hostname)_performance_"$dateformat".log
+echo "Testing Internet Connection... " >> /tmp/$(hostname)_performance_"$dateformat".log
 ping -c 1 google.com &> /dev/null
 if [ "$?" -eq 0 ] ; then
-echo "Internet Connected Sucssesfuly :" >> /tmp/$(hostname)_performance.log
+echo "Internet Connected Sucssesfuly :" >> /tmp/$(hostname)_performance_"$dateformat".log
 else
-echo "Internet Is Disconnected :" >> /tmp/$(hostname)_performance.log
+echo "Internet Is Disconnected :" >> /tmp/$(hostname)_performance_"$dateformat".log
 
 fi 
- echo "-------------------------------------------------------" >> /tmp/$(hostname)_performance.log
-  echo "" >> /tmp/$(hostname)_performance.log
+ echo "-------------------------------------------------------" >> /tmp/$(hostname)_performance_"$dateformat".log
+  echo "" >> /tmp/$(hostname)_performance_"$dateformat".log
 
-echo "RAM Usage :" >> /tmp/$(hostname)_performance.log
-free -h | grep -i "Mem" >> /tmp/$(hostname)_performance.log
-echo "-------------------------------------------------------" >> /tmp/$(hostname)_performance.log
-echo "" >> /tmp/$(hostname)_performance.log
-echo "Swap Usage :" >> /tmp/$(hostname)_performance.log
-free -h | grep -i "Swap" >> /tmp/$(hostname)_performance.log
-echo "-------------------------------------------------------" >> /tmp/$(hostname)_performance.log
-echo "" >> /tmp/$(hostname)_performance.log
-echo "Disk Usage :" >> /tmp/$(hostname)_performance.log
-df -h >> /tmp/$(hostname)_performance.log
-echo "" >> /tmp/$(hostname)_performance.log
+echo "RAM Usage :" >> /tmp/$(hostname)_performance_"$dateformat".log
+free -h | grep -i "Mem" >> /tmp/$(hostname)_performance_"$dateformat".log
+echo "-------------------------------------------------------" >> /tmp/$(hostname)_performance_"$dateformat".log
+echo "" >> /tmp/$(hostname)_performance_"$dateformat".log
+echo "Swap Usage :" >> /tmp/$(hostname)_performance_"$dateformat".log
+free -h | grep -i "Swap" >> /tmp/$(hostname)_performance_"$dateformat".log
+echo "-------------------------------------------------------" >> /tmp/$(hostname)_performance_"$dateformat".log
+echo "" >> /tmp/$(hostname)_performance_"$dateformat".log
+echo "Disk Usage :" >> /tmp/$(hostname)_performance_"$dateformat".log
+df -h >> /tmp/$(hostname)_performance_"$dateformat".log
+echo "" >> /tmp/$(hostname)_performance_"$dateformat".log
