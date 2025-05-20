@@ -5,9 +5,7 @@ pipeline {
                 SSH_KEY = '/var/jenkins_home/.ssh/id_rsa'
                 REMOTE_USER = 'jenkinsusr'
                 REMOTE_HOST = '192.168.50.125'
-                //WEB_SERVICE = 'motivation'
-                //WEB_TEST = "Your problem"
-                
+                MAIN_LOGER = '192.168.50.120'           
             }
 
     stages {
@@ -15,10 +13,10 @@ pipeline {
         stage('Copy & Script') {
             steps {
                 sh '''
-                    scp -i $SSH_KEY Remote_Monitor/performance_checker.sh $REMOTE_USER@$REMOTE_HOST:/tmp/InstallWebService.sh             
+                    scp -i $SSH_KEY Remote_Monitor/performance_checker.sh $REMOTE_USER@$REMOTE_HOST:/tmp/performance_checker.sh            
                     ssh -i $SSH_KEY $REMOTE_USER@$REMOTE_HOST <<'EOF'
-                    chmod +x /tmp/InstallWebService.sh
-                    /tmp/InstallWebService.sh
+                    chmod +x /tmp/performance_checker.sh
+                    /tmp/performance_checker.sh
                 '''
             }
 
@@ -27,12 +25,24 @@ pipeline {
          stage('Copy Reports') {
             steps {
                 sh '''
-                    scp $REMOTE_USER@192.168.50.125:/tmp/*performance.log Remote_Monitor/
-                    scp -i $SSH_KEY Remote_Monitor/*performance.log $REMOTE_USER@192.168.50.120:/loger/
+                    scp $REMOTE_USER@$REMOTE_HOST:/tmp/*performance.log Remote_Monitor/
+                    scp -i $SSH_KEY Remote_Monitor/*performance.log $REMOTE_USER@$MAIN_LOGER:/loger/
                 '''
             }
 
-        
+        }
+
+                stage('CleanUp') {
+            steps {
+                sh '''
+                    ssh -i $SSH_KEY $REMOTE_USER@$REMOTE_HOST <<'EOF'
+                    rm -rf /tmp/*performance.log
+                    rm -rf /tmp/performance_checker.sh
+                '''
+                sh '''
+                    rm -rf /var/jenkins_home/workspace/Remote_Monitor*
+                '''
+            }
 
         }
 
