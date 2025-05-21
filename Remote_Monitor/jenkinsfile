@@ -10,7 +10,7 @@ pipeline {
 
     stages {
 
-        stage('Copy & Script') {
+        stage('Copy & Run Script') {
             steps {
                 sh '''
                     scp -i $SSH_KEY Remote_Monitor/performance_checker.sh $REMOTE_USER@$REMOTE_HOST:/tmp/performance_checker.sh            
